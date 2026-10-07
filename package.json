@@ -1,0 +1,24 @@
+{
+  "name": "gravador-de-tela-web",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "description": "Gravador de tela web estático: captura tela/janela/aba com áudio, salva em MP4 ou WebM.",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc --noEmit && vite build",
+    "preview": "vite preview",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@fontsource-variable/geist": "^5.2.5",
+    "@fontsource-variable/geist-mono": "^5.2.5",
+    "fix-webm-duration": "^1.0.6",
+    "lucide": "^0.525.0"
+  },
+  "devDependencies": {
+    "typescript": "^5.8.3",
+    "vite": "^6.3.5",
+    "vite-plugin-pwa": "^1.0.0"
+  }
+}
