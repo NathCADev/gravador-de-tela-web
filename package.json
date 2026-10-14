@@ -14,7 +14,8 @@
     "@fontsource-variable/geist": "^5.2.5",
     "@fontsource-variable/geist-mono": "^5.2.5",
     "fix-webm-duration": "^1.0.6",
-    "lucide": "^0.525.0"
+    "lucide": "^0.525.0",
+    "mediabunny": "^1.61.4"
   },
   "devDependencies": {
     "typescript": "^5.8.3",

@@ -10,6 +10,7 @@ Funciona em **computador com Windows, no Chrome ou no Edge atualizados**. Não f
 - Áudio do sistema + microfone (com seleção de dispositivo), mixados em uma trilha
 - Qualidades 480p, 720p e 1080p; 15, 24 ou 30 fps; estimativa de tamanho por minuto
 - Formatos MP4 (H.264, compatível) e WebM (VP9, arquivo menor)
+- MP4 final remontado no navegador (transmux via Mediabunny, sob demanda): o arquivo permite avançar/voltar em qualquer player
 - Contagem regressiva de 3 s ou 5 s (ou desligada), com cancelamento por botão ou Escape
 - Iniciar, pausar, retomar e parar (botão da página, barra nativa do navegador ou mini controle)
 - Captura de imagem (PNG) durante a gravação, na página ou no mini controle
@@ -60,7 +61,7 @@ src/
   main.ts             (liga interface, gravação e todos os recursos)
   state.ts            (máquina de estados e configurações)
   core/               (capture, presets, audio-mixer, audio-meter, audio-test,
-                       recorder, countdown, screenshot, download, pip-controller,
+                       recorder, remux, countdown, screenshot, download, pip-controller,
                        wake-lock, storage-writer, settings, capabilities, errors)
   ui/                 (views, componentes, ícones Lucide, tema)
   styles/             (tokens, base, componentes)

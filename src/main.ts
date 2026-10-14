@@ -9,6 +9,7 @@ import { captureMicrophone, captureScreen, listMicrophones, type ScreenCapture }
 import { createMixer, type MixerHandles } from './core/audio-mixer';
 import { createLevelMeter, type LevelMeter } from './core/audio-meter';
 import { createRecorder, finalizeBlob } from './core/recorder';
+import { remuxMp4Seekable } from './core/remux';
 import { buildFileName, triggerDownload } from './core/download';
 import { MSG, translateError } from './core/errors';
 import { acquireWakeLock, releaseWakeLock, watchVisibility } from './core/wake-lock';
@@ -30,6 +31,7 @@ import {
   renderRequesting,
   renderResult,
   renderSetup,
+  renderStopping,
   type TestPanelModel
 } from './ui/views';
 
@@ -117,7 +119,7 @@ function render(): void {
   } else if (state === 'ready' && store.result) {
     inner = renderResult(store.result);
   } else if (state === 'stopping') {
-    inner = renderRequesting();
+    inner = renderStopping();
   } else {
     if (state === 'error' && store.errorMessage) {
       inner = `<div style="margin-bottom:12px">${errorNote(store.errorMessage)}</div>` + renderSetup(store.config, caps, mics, null, setupExtras());
@@ -820,6 +822,11 @@ function showShotStatus(text: string): void {
   }, 2000);
 }
 
+function updateStoppingStatus(text: string): void {
+  const el = document.getElementById('stopping-status');
+  if (el) el.textContent = text;
+}
+
 async function stopRecording(origin: 'button' | 'native' | 'pip' | 'error'): Promise<void> {
   if (!session || store.state === 'stopping' || store.state === 'ready' || store.state === 'idle') return;
   void origin;
@@ -864,6 +871,18 @@ async function stopRecording(origin: 'button' | 'native' | 'pip' | 'error'): Pro
     finalBlob = await finalizeBlob(blob, duration, s.mimeType);
   } catch {
     finalBlob = blob;
+  }
+
+  if (store.config.format === 'mp4' && finalBlob.size > 0) {
+    updateStoppingStatus('Otimizando o arquivo para permitir avançar…');
+    try {
+      finalBlob = await remuxMp4Seekable(finalBlob, (ratio) => {
+        updateStoppingStatus(`Otimizando o arquivo para permitir avançar… ${Math.round(ratio * 100)}%`);
+      });
+    } catch {
+      // Mantém o original: o vídeo toca normalmente, só a busca
+      // pode não funcionar em alguns players.
+    }
   }
 
   s.screenshotter?.dispose();

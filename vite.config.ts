@@ -3,6 +3,9 @@ import { VitePWA } from 'vite-plugin-pwa';
 
 export default defineConfig({
   base: '/gravador-de-tela-web/',
+  // O chunk do Mediabunny (~590 kB) só carrega sob demanda ao finalizar
+  // um MP4, então o aviso de tamanho não se aplica ao carregamento inicial.
+  build: { chunkSizeWarningLimit: 700 },
   plugins: [
     VitePWA({
       registerType: 'autoUpdate',

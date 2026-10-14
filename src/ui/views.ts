@@ -245,3 +245,11 @@ export function renderRequesting(): string {
     <p class="footer-note">Use o seletor do navegador para continuar.</p>
   </section>`;
 }
+
+export function renderStopping(): string {
+  return `
+  <section class="section" style="text-align:center">
+    <p>Finalizando a gravação</p>
+    <p class="footer-note" id="stopping-status" role="status">Preparando o arquivo…</p>
+  </section>`;
+}
